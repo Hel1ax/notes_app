@@ -14,8 +14,6 @@ export const signIn = (data : object) => async (dispatch : Dispatch<Action>) : P
 
         const token = res.message?.token
 
-        console.log(token, typeof token);
-
         localStorage.setItem('token', token);
         
         dispatch({type: 'SIGN_IN', payload: res.success});
@@ -73,10 +71,10 @@ const authReducer = (state = initialState, action : Action) => {
             return {...state, isInitializing: action.payload};
 
         case 'AUTH':
-            return {...state, isInitializing: false, isAuthorized: action.payload};
+            return {...state, isInitializing: !action.payload, isAuthorized: action.payload};
 
         case 'SIGN_OUT':
-            return {...state, isInitializing: action.payload};
+            return {...state, isAuthorized: !action.payload};
 
         default:
             return state;

@@ -18,10 +18,6 @@ const PORT = process.env.PORT || 4000;
 
 app.use('/', router);
 
-app.get('/', (_, res) => {
-    res.send('Hello World!')
-});
-
 (async () => {
     try{
         await sequelize.authenticate();

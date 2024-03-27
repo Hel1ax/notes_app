@@ -1,24 +1,30 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { auth, signIn } from '../stores/authStore';
-import { AppDispatch } from '../stores/rootStore';
+import { AppDispatch, RootState } from '../stores/rootStore';
 import { ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom'; // Используем useHistory для редиректа
 import Header from 'components/Header';
 
 const SignInPage: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const navigate = useNavigate(); // Используем useHistory для редиректа
+    const navigate = useNavigate(); 
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [errors, setErrors] = useState({ email: '', password: '' });
+    const loggedIn = useSelector((state: RootState) => state.auth.isAuthorized as boolean);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    useEffect(() => {
+        if (loggedIn) 
+            navigate('/');
+    }, [loggedIn, navigate])
+
     const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // Валидация email и пароля
+        
         if (!formData.email.includes('@')) {
             setErrors({ ...errors, email: 'Invalid email address' });
             return;
@@ -29,7 +35,7 @@ const SignInPage: React.FC = () => {
         }
         // Очистка ошибок, если они были
         setErrors({ email: '', password: '' });
-        dispatch(signIn(formData)).then(() => dispatch(auth())).then(() => navigate('/'));
+        dispatch(signIn(formData)).then(() => dispatch(auth()));
     };
 
     return (

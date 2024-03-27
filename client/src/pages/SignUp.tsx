@@ -1,20 +1,26 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { auth, signUp } from '../stores/authStore';
-import { AppDispatch } from '../stores/rootStore';
+import { AppDispatch, RootState } from '../stores/rootStore';
 import { ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from 'components/Header';
 
 const SignUpPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const nav = useNavigate();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({ name:'', email: '', password: '' });
-    const [errors, setErrors] = useState({ name:'', email: '', password: '' });
-
+  const [errors, setErrors] = useState({ name:'', email: '', password: '' });
+  const loggedIn = useSelector((state: RootState) => state.auth.isAuthorized as boolean);
+  
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    if (loggedIn) 
+        navigate('/');
+}, [loggedIn, navigate])
 
   const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,7 +37,7 @@ const SignUpPage: React.FC = () => {
     // Очистка ошибок, если они были
     setErrors({ name:'',  email: '', password: '' });
     // Отправка данных для регистрации
-    dispatch(signUp(formData)).then(() => dispatch(auth())).then(() => nav('/'));
+    dispatch(signUp(formData)).then(() => dispatch(auth()));
   };
 
   return (

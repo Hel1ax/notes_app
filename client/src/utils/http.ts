@@ -14,7 +14,6 @@ export const request = async <Type>(
     headers: object = {}
 ): Promise<Response<Type>> => {
     try {
-        
         const res: AxiosResponse = await axios.request({
             url: url, 
             method,
@@ -23,7 +22,7 @@ export const request = async <Type>(
             headers: {  'Content-Type': 'application/json', ...headers },
             withCredentials: true
         });
-        
+
         return new Response(true, res.data);
     } catch (err: any) {
         return new Response(false, err.response ? err.response.data : err);

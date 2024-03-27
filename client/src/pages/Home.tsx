@@ -1,27 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getNotes, addNote, deleteNote } from '../stores/noteStore';
+import { getNotes, deleteNote } from '../stores/noteStore';
 import { Note } from '../stores/noteStore';
 import { AppDispatch, RootState } from '../stores/rootStore';
 import Header from 'components/Header';
 import NoteDetails from './NoteDetails'; 
-import { useNavigate } from 'react-router-dom'; // Используем useNavigate для редиректа
+import CreateNoteForm from 'components/CreateNoteForm';
+import { auth } from 'stores/authStore';
 
 const Home: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const notes = useSelector((state: RootState) => state.note.notes as Note[]);
-    const loggedIn = useSelector((state: RootState) => state.auth.isAuthorized);
-    const nav = useNavigate(); // Используем useNavigate для редиректа
+    const loggedIn = useSelector((state: RootState) => state.auth.isAuthorized as boolean);
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
-        loggedIn && dispatch(getNotes());   
+        if (token) {
+            dispatch(auth());
+        }
+    }, [dispatch, token]);
+
+    useEffect(() => {
+        if (loggedIn) {
+            dispatch(getNotes());
+        }
     }, [dispatch, loggedIn]);
 
-    const handleAddNote = () => {
-        dispatch(addNote());
-    };
-
-    const handleDeleteNote = (noteId: number) => {
+    const handleDeleteNote = (noteId: number, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        event.stopPropagation(); 
         dispatch(deleteNote(noteId));
     };
 
@@ -35,31 +41,29 @@ const Home: React.FC = () => {
         setSelectedNote(null);
     };
 
-    useEffect(() => {
-        if (!loggedIn) {
-            nav('/sign-in');
-        }
-    }, [loggedIn, nav]);
+    if (!loggedIn){
+        return <div><Header /></div>
+    }
 
     return (
         <div>
             <Header />
             {loggedIn && (
                 <div>
-                    <button onClick={handleAddNote}>Add Note</button>
+                    <CreateNoteForm />
                     {notes.map((note) => (
                         <div key={note.id} onClick={() => handleNoteClick(note)}> 
                             <h3>{note.title}</h3>
-                            <p>{note.text}</p>
-                            <button onClick={() => handleDeleteNote(note.id)}>Delete Note</button>
+                            <p>{note.content}</p>
+                            <button onClick={(event) => handleDeleteNote(note.id, event)}>Delete Note</button>
                         </div>
                     ))}
                 </div>
             )}
-            
             {selectedNote && (
                 <NoteDetails note={selectedNote} onClose={handleCloseNoteDetails} />
             )}
+            
         </div>
     );
 };

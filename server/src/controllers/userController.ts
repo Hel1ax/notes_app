@@ -41,6 +41,7 @@ export const signUp = async (req: IUserRequest, res: Response, next: NextFunctio
 // Аутентификация пользователя
 export const signIn = async (req: IUserRequest, res: Response) => {
     console.log(req.body)
+    
     try {
         const { email, password } = req.body;
         if (!email || !password) {
@@ -49,6 +50,7 @@ export const signIn = async (req: IUserRequest, res: Response) => {
 
         // Находим пользователя по email
         const user = await User.findOne({ where: { email } });
+        console.log(user?.id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -72,12 +74,11 @@ export const signIn = async (req: IUserRequest, res: Response) => {
 
 export const check = (req: IUserRequest, res: Response) => {
     const {user} = req;
-    
-    console.log(user);
+    console.log(user?.name);
     return res.status(200).json({name : user?.name});
 }
 
 export const signOut = (req: IUserRequest, res: Response) => {
-    req.user = undefined;
+    console.log(req.user);
     res.status(200).json({ message: 'Sign out successful' });
 }

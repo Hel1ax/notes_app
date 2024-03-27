@@ -5,7 +5,7 @@ import { IUserRequest } from "helpers/IUserRequest";
 
 export const auth = (req : IUserRequest, res: Response, next: NextFunction) => {
     try{
-
+        console.log('auth');
         if (req.method == 'OPTIONS')
             return next();
 
@@ -20,15 +20,11 @@ export const auth = (req : IUserRequest, res: Response, next: NextFunction) => {
         if (!decoded){
             return res.status(401).json({ message: 'Unauthorized' });
         }
-        
+
         req.user = decoded;
-        console.log("------------");
-        console.log(decoded);
-        console.log(req.user);
-        console.log("------------");
+        console.log(req.user.name);
         return next()
     }catch(err){
-        console.log(5);
-        return res.status(403).json({ message: 'Unauthorize3' });
+        return res.status(403).json({ message: 'Unauthorized' });
     }
 }

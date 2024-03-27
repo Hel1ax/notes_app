@@ -1,22 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import {  auth, signOut } from '../stores/authStore';
+import {   signOut } from '../stores/authStore';
 import { AppDispatch } from '../stores/rootStore';
 import { RootState } from '../stores/rootStore';
+
 
 const Header: React.FC = () => {
   const loggedIn = useSelector((state : RootState) => state.auth.isAuthorized);
   const dispatch = useDispatch<AppDispatch>();
 
   const handleSignOut = () => {
-    dispatch(signOut()).then(() => dispatch(auth()));
+      dispatch(signOut()) 
   };
 
   return (
     <header>
         <nav>
             <ul>
+
             <li><Link to="/">Home</Link></li>
             <li><Link to="/sign-in">Sign In</Link></li>
             <li><Link to="/sign-up">Sign Up</Link></li>

@@ -7,44 +7,43 @@ const BASE_URL = 'note/'
 export interface Note {
   id: number
   title: string
-  text: string
+  content: string
 }
 
 interface NoteState {
     notes: Note[]; 
 }
 
+const header = { Authorization: `Bearer ${localStorage.getItem("token")}` }
+
+
 export const getNotes = () => {
     return async (dispatch : Dispatch) => {
-        try {
-            const res = await request<Note[]>(BASE_URL + 'get', 'get');
-            if (res.success) {
-                const notes = Array.isArray(res.message) ? res.message.sort((a, b) => a.id - b.id) : [];
-                dispatch({ type: 'GET_NOTES', payload: notes });
-            } else{
-                throw new Error(JSON.stringify(res.message));
-            }
-        } catch (error) {
-            console.log(error);
-        }
+        const res = await request<Note[]>(BASE_URL, 'get', {}, {}, header);
+        const notes = Array.isArray(res.message) ? res.message.sort((a, b) => a.id - b.id) : [];
+        dispatch({ type: 'GET_NOTES', payload: notes });
     };
 }
 
-export const addNote = () => {
+export const addNote = (title: string, content: string) => {
     return async (dispatch : Dispatch) => {
-        const res = await request<Note>(BASE_URL + 'post', 'post', { title: '', text: '' })
+        const res = await request<Note>(BASE_URL, 'post', { title: title, content: content }, {}, header)
         dispatch({ type: 'ADD_NOTE', payload: res.message });
     };
 }
   
 export const updateNote = (note : Note) => async (dispatch : Dispatch) => {
-    const res = await request<Note>(`${BASE_URL}put`, 'put', note);
+    const res = await request<Note>(`${BASE_URL}`, 'put', {id: note.id, title: note.title, content: note.content}, {}, header);
     dispatch({ type: 'UPDATE_NOTE', payload: res.message });
 }
   
 export const deleteNote = (noteId : number) => async (dispatch : Dispatch) => {
-    await request<void>(`${BASE_URL}delete`, 'delete', {}, { noteId });
+    await request<void>(`${BASE_URL}`, 'delete', { id : noteId }, {}, header);
     dispatch({ type: 'DELETE_NOTE', payload: noteId });
+}
+
+export const resetNotes = () => async (dispatch : Dispatch) => {
+    dispatch({ type: 'RESET_NOTES', payload: [] });
 }
   
 const initialState : NoteState = {
@@ -69,6 +68,8 @@ const noteReducer = (state = initialState, action : Action) : NoteState => {
             ...state,
             notes: state.notes.filter(note => note.id !== action.payload)
             };
+        case 'RESET_NOTES':
+            return initialState;
         default:
             return state;
     }

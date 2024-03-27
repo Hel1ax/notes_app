@@ -6,7 +6,7 @@ import { AppDispatch } from '../stores/rootStore';
 
 interface Props {
   note: Note;
-  onClose: () => void; // Функция для закрытия компонента просмотра заметки
+  onClose: () => void; 
 }
 
 const NoteDetails: React.FC<Props> = ({ note, onClose }) => {
@@ -23,24 +23,24 @@ const NoteDetails: React.FC<Props> = ({ note, onClose }) => {
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setEditedNote({
       ...editedNote,
-      text: e.target.value
+      content: e.target.value
     });
   };
 
   const handleSave = () => {
     dispatch(updateNote(editedNote));
-    onClose(); // Закрыть компонент просмотра после сохранения
+    onClose(); 
   };
 
   const handleDelete = () => {
     dispatch(deleteNote(note.id));
-    onClose(); // Закрыть компонент просмотра после удаления
+    onClose(); 
   };
 
   return (
     <div>
       <input type="text" value={editedNote.title} onChange={handleTitleChange} />
-      <textarea value={editedNote.text} onChange={handleTextChange} />
+      <textarea value={editedNote.content} onChange={handleTextChange} />
       <button onClick={handleSave}>Save</button>
       <button onClick={handleDelete}>Delete</button>
     </div>
