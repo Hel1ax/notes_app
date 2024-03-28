@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import {   signOut } from '../stores/authStore';
+import { signOut } from '../stores/authStore';
 import { AppDispatch } from '../stores/rootStore';
 import { RootState } from '../stores/rootStore';
 
@@ -14,15 +14,16 @@ const Header: React.FC = () => {
       dispatch(signOut()) 
   };
 
-  return (
-    <header>
-        <nav>
-            <ul>
+  const listyles = "hover:text-gray-400 pr-4"
 
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/sign-in">Sign In</Link></li>
-            <li><Link to="/sign-up">Sign Up</Link></li>
-            {loggedIn && <li><button onClick={handleSignOut}>Sign Out</button></li>}
+  return (
+    <header className="bg-gray-800 text-white p-5" >
+        <nav className='text-lg'>
+            <ul className='flex flex-row justify-end'>
+            <li><Link to="/" className={listyles}>Home</Link></li>
+            <li><Link to="/sign-in" className={listyles}>Sign In</Link></li>
+            <li><Link to="/sign-up" className={listyles}>Sign Up</Link></li>
+            {loggedIn && <li ><button onClick={handleSignOut} className={listyles}>Sign Out</button></li>}
             </ul>
         </nav>
     </header>

@@ -14,6 +14,7 @@ const SignUpPage: React.FC = () => {
   const loggedIn = useSelector((state: RootState) => state.auth.isAuthorized as boolean);
   
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setErrors({ name:'',  email: '', password: '' });
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -24,33 +25,67 @@ const SignUpPage: React.FC = () => {
 
   const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Проверка валидности email
     if (!formData.email.includes('@')) {
       setErrors({ ...errors, email: 'Invalid email address' });
       return;
     }
-    // Проверка валидности пароля
     if (formData.password.length < 6) {
       setErrors({ ...errors, password: 'Password must be at least 6 characters long' });
       return;
     }
-    // Очистка ошибок, если они были
+    if (!formData.name) {
+      setErrors({ ...errors, name: 'Name is required' });
+      return;
+    }
     setErrors({ name:'',  email: '', password: '' });
-    // Отправка данных для регистрации
-    dispatch(signUp(formData)).then(() => dispatch(auth()));
+    dispatch(signUp(formData))
+    .then(() => dispatch(auth()))
   };
 
   return (
     <div>
       <Header />
-      <form onSubmit={handleSubmit}>
-        <input type="name" name="name" value={formData.name} onChange={handleInputChange} />
-        {errors.name && <span>{errors.name}</span>}
-        <input type="email" name="email" value={formData.email} onChange={handleInputChange} />
-        {errors.email && <span>{errors.email}</span>}
-        <input type="password" name="password" value={formData.password} onChange={handleInputChange} />
-        {errors.password && <span>{errors.password}</span>}
-        <button type="submit" >Sign Up</button>
+      <h2 className="text-6xl text-center mt-5 font-light">Sign Up</h2>
+      <form 
+        onSubmit={handleSubmit}
+        className="flex flex-col w-96 mx-auto border-slate-500 border-2 rounded-lg p-2 m-5 items-center"
+      >
+        <input 
+          placeholder='Name'
+          type="name" 
+          name="name" 
+          value={formData.name} 
+          onChange={handleInputChange} 
+          className='border-b-2 border-black px-3 py-2 text-2xl mb-4 hover:placeholder-gray-500 ease-linear duration-200'
+        />
+        {errors.name && <span className='text-red-600'>{errors.name}</span>}
+
+        <input 
+          placeholder='Email'
+          type="email" 
+          name="email" 
+          value={formData.email} 
+          onChange={handleInputChange} 
+          className='border-b-2 border-black px-3 py-2 text-2xl mb-4 hover:placeholder-gray-500 ease-linear duration-200'
+        />
+        {errors.email && <span className='text-red-600'>{errors.email}</span>}
+
+        <input 
+          placeholder='Password'
+          type="password" 
+          name="password" 
+          value={formData.password} 
+          onChange={handleInputChange} 
+          className='border-b-2 border-black px-3 py-2 text-2xl mb-4 hover:placeholder-gray-500 ease-linear duration-200'
+        />
+        {errors.password && <span className='text-red-600'>{errors.password}</span>}
+
+        <button 
+          type="submit"
+          className="bg-blue-600 hover:bg-blue-800 ease-linear duration-100 text-white font-bold py-2 px-4 rounded w-1/2 "
+        >
+          Sign Up
+        </button>
       </form>
     </div>
   );

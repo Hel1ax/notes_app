@@ -14,31 +14,36 @@ interface NoteState {
     notes: Note[]; 
 }
 
-const header = { Authorization: `Bearer ${localStorage.getItem("token")}` }
+const getHeader = () => ({
+    Authorization: `Bearer ${localStorage.getItem("token")}`
+});
 
 
 export const getNotes = () => {
     return async (dispatch : Dispatch) => {
-        const res = await request<Note[]>(BASE_URL, 'get', {}, {}, header);
+        
+        const res = await request<Note[]>(BASE_URL, 'get', {}, {}, getHeader());
         const notes = Array.isArray(res.message) ? res.message.sort((a, b) => a.id - b.id) : [];
+
         dispatch({ type: 'GET_NOTES', payload: notes });
     };
 }
 
+
 export const addNote = (title: string, content: string) => {
     return async (dispatch : Dispatch) => {
-        const res = await request<Note>(BASE_URL, 'post', { title: title, content: content }, {}, header)
+        const res = await request<Note>(BASE_URL, 'post', { title: title, content: content }, {}, getHeader())
         dispatch({ type: 'ADD_NOTE', payload: res.message });
     };
 }
   
 export const updateNote = (note : Note) => async (dispatch : Dispatch) => {
-    const res = await request<Note>(`${BASE_URL}`, 'put', {id: note.id, title: note.title, content: note.content}, {}, header);
+    const res = await request<Note>(`${BASE_URL}`, 'put', {id: note.id, title: note.title, content: note.content}, {}, getHeader());
     dispatch({ type: 'UPDATE_NOTE', payload: res.message });
 }
   
 export const deleteNote = (noteId : number) => async (dispatch : Dispatch) => {
-    await request<void>(`${BASE_URL}`, 'delete', { id : noteId }, {}, header);
+    await request<void>(`${BASE_URL}`, 'delete', { id : noteId }, {}, getHeader());
     dispatch({ type: 'DELETE_NOTE', payload: noteId });
 }
 

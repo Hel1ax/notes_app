@@ -8,6 +8,10 @@ async function updateStatus(url: string, data: object, headers : object = {}): P
     return res;
 }
 
+const getHeader = () => ({
+    Authorization: `Bearer ${localStorage.getItem("token")}`
+});
+
 export const signIn = (data : object) => async (dispatch : Dispatch<Action>) : Promise<void> => {
     try{
         const res = await updateStatus('signin', data);
@@ -40,13 +44,9 @@ export const signUp = (data : object) => async (dispatch : Dispatch<Action>) => 
 
 export const auth = () => async (dispatch : Dispatch<Action>) => {
 
-    const res = await updateStatus('auth', {}, {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-    });
+    const res = await updateStatus('auth', {}, getHeader());
 
-    console.log(res.success);
-
-    dispatch({type: 'AUTH', payload: res.success});
+    dispatch({type: 'AUTH', payload: {auth : res.success, name: res.message?.name}});
 };
   
 export const signOut = () => async (dispatch : Dispatch<Action>) => {
@@ -57,6 +57,7 @@ export const signOut = () => async (dispatch : Dispatch<Action>) => {
 
 
 const initialState : State = {
+    name: '',
     isAuthorized: false,
     isInitializing: false
 };
@@ -71,7 +72,7 @@ const authReducer = (state = initialState, action : Action) => {
             return {...state, isInitializing: action.payload};
 
         case 'AUTH':
-            return {...state, isInitializing: !action.payload, isAuthorized: action.payload};
+            return {...state, name: action.payload.name,  isInitializing: false, isAuthorized: action.payload.auth};
 
         case 'SIGN_OUT':
             return {...state, isAuthorized: !action.payload};

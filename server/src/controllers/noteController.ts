@@ -3,8 +3,6 @@ import {NextFunction, Response} from 'express'
 import {IUserRequest} from '../helpers/IUserRequest'
 
 export const get = async (req : IUserRequest, res: Response) => {
-    console.log('get');
-    console.log(req.user);
 
     if (!req.user) {
         return res.status(401).json({ message: 'Unauthorized' });
@@ -18,8 +16,6 @@ export const get = async (req : IUserRequest, res: Response) => {
 export const post = async (req : IUserRequest, res: Response, next : NextFunction) => {
     try{
         const {title, content} = req.body
-        console.log('post')
-        console.log(req.user);
 
         if (!req.user) {
             return res.status(401).json({ message: 'Unauthorized' });
@@ -30,7 +26,7 @@ export const post = async (req : IUserRequest, res: Response, next : NextFunctio
             content,
             userId: req.user.id
         })
-        console.log(note.id);
+
         return res.status(201).json(note)
     }catch (err : any) {
         if (err.errors)
@@ -41,7 +37,6 @@ export const post = async (req : IUserRequest, res: Response, next : NextFunctio
 }
 
 export const update = async (req : IUserRequest, res: Response) => {
-    console.log('update')
     const {id, title, content} = req.body
     const note = await Note.findByPk(id)
     if (!note){
@@ -56,10 +51,10 @@ export const update = async (req : IUserRequest, res: Response) => {
 }
 
 export const destroy = async (req : IUserRequest, res: Response) => {
-    console.log('destroy')
+
     const {id} = req.body
-    console.log(id);
     const note = await Note.findByPk(id)
+    
     if (!note){
         return res.status(404).json({message: 'Note not found'})
     }
