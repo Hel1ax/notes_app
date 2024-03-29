@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Note } from '../stores/noteStore';
+import { Note } from '../types/Notes';
 import { updateNote, deleteNote } from '../stores/noteStore';
 import { AppDispatch } from '../stores/rootStore';
 
@@ -45,12 +45,14 @@ const NoteDetails: React.FC<Props> = ({ note, onClose }) => {
     <div className="flex flex-col w-80 mx-auto border-slate-500 border-2 rounded-lg p-2 m-5 items-center">
       <input 
         type="text" 
+        data-testid="note-details-input"
         value={editedNote.title} 
         onChange={handleTitleChange} 
         className="border-b-2 border-black px-3 py-2 text-2xl mb-4 hover:placeholder-gray-500 ease-linear duration-200"
       />
       <textarea 
         value={editedNote.content} 
+        data-testid="note-details-textarea"
         onChange={handleTextChange} 
         className="border-b-2 border-black px-3 py-2 text-xl mb-4 w-full hover:placeholder-gray-500 ease-linear duration-200"
         />

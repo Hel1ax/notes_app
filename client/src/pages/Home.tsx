@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getNotes, deleteNote } from '../stores/noteStore';
-import { Note } from '../stores/noteStore';
+import { getNotes } from '../stores/noteStore';
+import { Note } from '../types/Notes';
 import { AppDispatch, RootState } from '../stores/rootStore';
 import Header from 'components/Header';
 import NoteDetails from '../components/NoteDetails'; 

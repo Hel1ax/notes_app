@@ -1,6 +1,6 @@
 import { Note } from "../db/note"
 import {NextFunction, Response} from 'express'
-import {IUserRequest} from '../helpers/IUserRequest'
+import {IUserRequest} from '../types/IUserRequest'
 
 export const get = async (req : IUserRequest, res: Response) => {
 

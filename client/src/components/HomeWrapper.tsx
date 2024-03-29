@@ -7,8 +7,8 @@ import { Navigate } from 'react-router-dom';
 const HomeWrapper: React.FC<PropsWithChildren> = (props) => {
 
     const dispatch = useDispatch<AppDispatch>();
-    const loggedIn = useSelector((state: RootState) => state.auth.isAuthorized as boolean);
-    const isInitializing = useSelector((state: RootState) => state.auth.isInitializing as boolean);
+    const loggedIn = useSelector((state: RootState) => state.auth.isAuthorized);
+    const isInitializing = useSelector((state: RootState) => state.auth.isInitializing);
 
     const token = localStorage.getItem('token');
     

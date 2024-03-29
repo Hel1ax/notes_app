@@ -1,7 +1,7 @@
 import { Response, NextFunction, Request} from "express";
 import { User } from "../db/user";
 import jwt from 'jsonwebtoken';
-import { IUserRequest } from "helpers/IUserRequest";
+import { IUserRequest } from "types/IUserRequest";
 
 export const auth = (req : IUserRequest, res: Response, next: NextFunction) => {
     try{

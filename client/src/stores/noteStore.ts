@@ -1,18 +1,18 @@
 import { Dispatch } from "redux";
 import { request } from "../utils/http";
-import { Action } from "../Types/ActionType";
+import { Action } from "../types/ActionType";
+import { Note } from "types/Notes";
 
 const BASE_URL = 'note/'
-
-export interface Note {
-  id: number
-  title: string
-  content: string
-}
 
 interface NoteState {
     notes: Note[]; 
 }
+
+const initialState : NoteState = {
+    notes: new Array<Note>()
+};
+  
 
 const getHeader = () => ({
     Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -47,14 +47,6 @@ export const deleteNote = (noteId : number) => async (dispatch : Dispatch) => {
     dispatch({ type: 'DELETE_NOTE', payload: noteId });
 }
 
-export const resetNotes = () => async (dispatch : Dispatch) => {
-    dispatch({ type: 'RESET_NOTES', payload: [] });
-}
-  
-const initialState : NoteState = {
-    notes: new Array<Note>()
-};
-  
 const noteReducer = (state = initialState, action : Action) : NoteState => {
     switch (action.type) {
         case 'GET_NOTES':
@@ -63,18 +55,16 @@ const noteReducer = (state = initialState, action : Action) : NoteState => {
             return { ...state, notes: [...state.notes, action.payload] };
         case 'UPDATE_NOTE':
             return {
-            ...state,
-            notes: state.notes.map(note =>
-                note.id === action.payload.id ? action.payload : note
-            )
+                ...state,
+                notes: state.notes.map(note =>
+                    note.id === action.payload.id ? action.payload : note
+                )
             };
         case 'DELETE_NOTE':
             return {
-            ...state,
-            notes: state.notes.filter(note => note.id !== action.payload)
+                ...state,
+                notes: state.notes.filter(note => note.id !== action.payload)
             };
-        case 'RESET_NOTES':
-            return initialState;
         default:
             return state;
     }

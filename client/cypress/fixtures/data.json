@@ -1,0 +1,10 @@
+{
+  "email": "user@gmail.com",
+  "password": "password",
+  "title": "New note",
+  "content": "Lorem",
+  "updatedTitle": "Updated note",
+  "updatedContent": "Updated Lorem",
+  "incorrectPassword": "incorrect",
+  "incorrectEmail": "incorrect@mail.com"
+}

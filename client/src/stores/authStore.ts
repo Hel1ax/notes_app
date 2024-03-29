@@ -1,7 +1,7 @@
 import {Response, request} from '../utils/http';
 import {Dispatch} from 'redux';
-import { Action } from '../Types/ActionType';
-import { State } from '../Types/AuthStateType';
+import { Action } from '../types/ActionType';
+import { State } from '../types/AuthStateType';
 
 async function updateStatus(url: string, data: object, headers : object = {}): Promise<Response<any>> {
     const res = await request<any>('user/' + url, 'post', data, {} , headers);
@@ -31,7 +31,7 @@ export const signUp = (data : object) => async (dispatch : Dispatch<Action>) => 
     try{
         const res = await updateStatus('signup', data);
         
-        const token = res.message?.token as string
+        const token = res.message?.token
 
         localStorage.setItem('token', token);
 

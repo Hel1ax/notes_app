@@ -36,8 +36,8 @@ const SignInPage: React.FC = () => {
         }
 
         setErrors({ email: '', password: '', auth: '' });
-        dispatch(signIn(formData))
         
+        dispatch(signIn(formData))
         .then(() => dispatch(auth()))
         .then(() => {
             if (!loggedIn){
