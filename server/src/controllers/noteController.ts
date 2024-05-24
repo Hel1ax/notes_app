@@ -2,6 +2,13 @@ import { Note } from "../db/note"
 import {NextFunction, Response} from 'express'
 import {IUserRequest} from '../types/IUserRequest'
 
+/**
+ * Retrieves all notes associated with the authenticated user.
+ *
+ * @param {IUserRequest} req - The request object containing the authenticated user.
+ * @param {Response} res - The response object used to send the notes back to the client.
+ * @return {Promise<void>} A promise that resolves when the notes are successfully retrieved and sent back to the client.
+ */
 export const get = async (req : IUserRequest, res: Response) => {
 
     if (!req.user) {
@@ -12,7 +19,14 @@ export const get = async (req : IUserRequest, res: Response) => {
     return res.json(notes);
 }
 
-
+/**
+ * Creates a new note with the given title and content associated with the authenticated user.
+ *
+ * @param {IUserRequest} req - The request object containing the authenticated user.
+ * @param {Response} res - The response object used to send the created note back to the client.
+ * @param {NextFunction} next - The next function to be called in the middleware chain.
+ * @return {Promise<void>} A promise that resolves when the note is successfully created and sent back to the client.
+ */
 export const post = async (req : IUserRequest, res: Response, next : NextFunction) => {
     try{
         const {title, content} = req.body
@@ -36,6 +50,13 @@ export const post = async (req : IUserRequest, res: Response, next : NextFunctio
     }
 }
 
+/**
+ * Updates a note with the given ID, title, and content associated with the authenticated user.
+ *
+ * @param {IUserRequest} req - The request object containing the authenticated user and the note data.
+ * @param {Response} res - The response object used to send the updated note back to the client.
+ * @return {Promise<void>} A promise that resolves when the note is successfully updated and sent back to the client.
+ */
 export const update = async (req : IUserRequest, res: Response) => {
     const {id, title, content} = req.body
     const note = await Note.findByPk(id)
@@ -50,6 +71,13 @@ export const update = async (req : IUserRequest, res: Response) => {
     return res.json(note) 
 }
 
+/**
+ * Deletes a note with the given ID associated with the authenticated user.
+ *
+ * @param {IUserRequest} req - The request object containing the authenticated user and the note ID.
+ * @param {Response} res - The response object used to send the result back to the client.
+ * @return {Promise<void>} A promise that resolves when the note is successfully deleted and a response is sent back to the client.
+ */
 export const destroy = async (req : IUserRequest, res: Response) => {
 
     const {id} = req.body

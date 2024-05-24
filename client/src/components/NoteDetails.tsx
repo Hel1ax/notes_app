@@ -9,6 +9,14 @@ interface Props {
   onClose: () => void; 
 }
 
+/**
+ * Renders the details of a note and provides functionality to edit and delete the note.
+ *
+ * @param {Props} props - The component props.
+ * @param {Note} props.note - The note object to display and edit.
+ * @param {Function} props.onClose - The function to call when the note details are closed.
+ * @return {JSX.Element} The JSX element representing the note details component.
+ */
 const NoteDetails: React.FC<Props> = ({ note, onClose }) => {
   const dispatch = useDispatch<AppDispatch>();
   const [editedNote, setEditedNote] = useState(note);
@@ -17,6 +25,12 @@ const NoteDetails: React.FC<Props> = ({ note, onClose }) => {
     setEditedNote(note);
   }, [note]);
 
+    /**
+   * Updates the title of the edited note based on the input value.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} e - The event object containing the input element.
+   * @return {void} This function does not return anything.
+   */
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedNote({
       ...editedNote,
@@ -24,6 +38,12 @@ const NoteDetails: React.FC<Props> = ({ note, onClose }) => {
     });
   };
 
+  /**
+   * Updates the content of the edited note based on the input value.
+   *
+   * @param {React.ChangeEvent<HTMLTextAreaElement>} e - The event object containing the textarea element.
+   * @return {void} This function does not return anything.
+   */
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setEditedNote({
       ...editedNote,
@@ -31,11 +51,20 @@ const NoteDetails: React.FC<Props> = ({ note, onClose }) => {
     });
   };
 
+  /**
+   * Updates the note in the store with the edited note and closes the details view.
+   *
+   * @return {void} This function does not return anything.
+   */
   const handleSave = () => {
     dispatch(updateNote(editedNote));
     onClose(); 
   };
-
+  /**
+   * Deletes a note and closes the details view.
+   *
+   * @return {void} This function does not return anything.
+   */
   const handleDelete = () => {
     dispatch(deleteNote(note.id));
     onClose(); 

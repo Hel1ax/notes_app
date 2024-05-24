@@ -4,6 +4,14 @@ import jwt from 'jsonwebtoken';
 import { User } from '../db/user'
 import { IUserRequest } from 'types/IUserRequest';
 
+/**
+ * Handles the sign up process for a new user.
+ *
+ * @param {IUserRequest} req - The request object containing user information.
+ * @param {Response} res - The response object used to send the response back to the client.
+ * @param {NextFunction} next - The next function to be called in the middleware chain.
+ * @return {Promise<Response | void>} A promise that resolves to a response object or void.
+ */
 export const signUp = async (req: IUserRequest, res: Response, next: NextFunction) : Promise<Response | void>=> {
     
     try {
@@ -36,6 +44,13 @@ export const signUp = async (req: IUserRequest, res: Response, next: NextFunctio
     }
 };
 
+/**
+ * Signs in a user by verifying their email and password.
+ *
+ * @param {IUserRequest} req - The request object containing user information.
+ * @param {Response} res - The response object used to send the response back to the client.
+ * @return {Promise<Response>} A promise that resolves to a response object.
+ */
 export const signIn = async (req: IUserRequest, res: Response) => {
     
     try {
@@ -63,13 +78,26 @@ export const signIn = async (req: IUserRequest, res: Response) => {
     }
 };
 
-
+/**
+ * Retrieves the name of the user from the request and sends it as a JSON response.
+ *
+ * @param {IUserRequest} req - The request object containing user information.
+ * @param {Response} res - The response object used to send the response back to the client.
+ * @return {Response} A JSON response containing the name of the user.
+ */
 export const check = (req: IUserRequest, res: Response) => {
     const {user} = req;
     
     return res.status(200).json({name : user?.name});
 }
 
+/**
+ * Signs out the user and sends a success response.
+ *
+ * @param {IUserRequest} req - The request object containing user information.
+ * @param {Response} res - The response object used to send the response back to the client.
+ * @return {void} This function does not return anything.
+ */
 export const signOut = (req: IUserRequest, res: Response) => {
     res.status(200).json({ message: 'Sign out successful' });
 }

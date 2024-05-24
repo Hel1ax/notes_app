@@ -3,6 +3,14 @@ import { User } from "../db/user";
 import jwt from 'jsonwebtoken';
 import { IUserRequest } from "types/IUserRequest";
 
+/**
+ * Middleware function for authentication.
+ *
+ * @param {IUserRequest} req - The request object containing user information.
+ * @param {Response} res - The response object.
+ * @param {NextFunction} next - The next middleware function.
+ * @return {void} This function does not return anything.
+ */
 export const auth = (req : IUserRequest, res: Response, next: NextFunction) => {
     try{
 

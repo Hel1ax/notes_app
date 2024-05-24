@@ -6,13 +6,23 @@ import { ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from 'components/Header';
 
+/**
+ * Renders the Sign Up page component.
+ *
+ * @return {ReactElement} The Sign Up page component.
+ */
 const SignUpPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ name:'', email: '', password: '' });
   const [errors, setErrors] = useState({ name:'', email: '', password: '' });
   const loggedIn = useSelector((state: RootState) => state.auth.isAuthorized as boolean);
-  
+  /**
+   * Updates the form data and clears any errors when an input field changes.
+   *
+   * @param {ChangeEvent<HTMLInputElement>} e - The event object representing the input change.
+   * @return {void} This function does not return anything.
+   */
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setErrors({ name:'',  email: '', password: '' });
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,6 +33,12 @@ const SignUpPage: React.FC = () => {
         navigate('/');
 }, [loggedIn, navigate])
 
+  /**
+   * Handles the form submission event.
+   *
+   * @param {ChangeEvent<HTMLFormElement>} e - The form event object.
+   * @return {void} This function does not return anything.
+   */
   const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!formData.email.includes('@')) {

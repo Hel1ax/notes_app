@@ -7,6 +7,11 @@ import Header from 'components/Header';
 import NoteDetails from '../components/NoteDetails'; 
 import CreateNoteForm from 'components/CreateNoteForm';
 
+/**
+ * A React functional component that renders the home page of the application.
+ *
+ * @return {JSX.Element} The rendered home page component.
+ */
 const Home: React.FC = () => {
     
     const dispatch = useDispatch<AppDispatch>();
@@ -20,10 +25,20 @@ const Home: React.FC = () => {
 
     const [selectedNote, setSelectedNote] = useState<Note | null>(null);
 
+    /**
+     * Updates the selected note state with the provided note.
+     *
+     * @param {Note} note - The note to be selected.
+     * @return {void} This function does not return anything.
+     */
     const handleNoteClick = (note: Note) => {
         setSelectedNote(note);
     };    
-    
+    /**
+     * Closes the details view by setting the selected note to null.
+     *
+     * @return {void} This function does not return anything.
+     */
     const handleCloseNoteDetails = () => {
         setSelectedNote(null);
     };

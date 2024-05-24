@@ -3,12 +3,23 @@ import { useDispatch } from 'react-redux';
 import { addNote } from '../stores/noteStore';
 import { AppDispatch } from 'stores/rootStore';
 
+/**
+ * Renders a form for creating a note.
+ *
+ * @return {JSX.Element} The form component for creating a note.
+ */
 const CreateNoteForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [error, setError] = useState('');
 
+  /**
+ * Handles the form submission event.
+ *
+ * @param {React.FormEvent} e - The form event object.
+ * @return {void} This function does not return anything.
+ */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (title.trim() && content.trim()) {

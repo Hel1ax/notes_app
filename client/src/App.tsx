@@ -4,7 +4,11 @@ import SignInPage from 'pages/SignIn';
 import SignUpPage from 'pages/SignUp';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-
+/**
+ * Renders the main application component.
+ *
+ * @return {JSX.Element} The rendered application component.
+ */
 function App() {
   
   return (

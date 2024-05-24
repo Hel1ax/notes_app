@@ -5,11 +5,20 @@ import { signOut } from '../stores/authStore';
 import { AppDispatch } from '../stores/rootStore';
 import { RootState } from '../stores/rootStore';
 
-
+/**
+ * Renders the header component of the application.
+ *
+ * @return {ReactElement} The header component.
+ */
 const Header: React.FC = () => {
   const loggedIn = useSelector((state : RootState) => state.auth.isAuthorized);
   const dispatch = useDispatch<AppDispatch>();
 
+    /**
+   * Handles the sign out action by dispatching the signOut action from the authStore.
+   *
+   * @return {void} This function does not return anything.
+   */
   const handleSignOut = () => {
       dispatch(signOut()) 
   };
